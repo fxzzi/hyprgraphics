@@ -16,7 +16,7 @@
   doCheck ? false,
   debug ? false,
 }: let
-  inherit (builtins) foldl';
+  inherit (builtins) foldl' path;
   inherit (lib.lists) flatten;
   inherit (lib.sources) cleanSource cleanSourceWith;
   inherit (lib.strings) hasSuffix;
@@ -37,7 +37,10 @@ in
         baseName = baseNameOf (toString name);
       in
         ! (hasSuffix ".nix" baseName);
-      src = cleanSource ../.;
+      src = path {
+        path = cleanSource ../.;
+        name = "source";
+      };
     };
 
     nativeBuildInputs = [
